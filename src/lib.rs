@@ -255,6 +255,14 @@ where
             SmallMap::Inline(inner) => inner.remove_entry(k),
         }
     }
+
+    #[inline]
+    pub fn clear(&mut self) {
+        match self {
+            SmallMap::Heap(inner) => inner.clear(),
+            SmallMap::Inline(inner) => inner.clear(),
+        }
+    }
 }
 
 pub enum Iter<'a, const N: usize, K, V> {
@@ -411,6 +419,16 @@ mod tests {
         assert_eq!(map.remove("hello2").unwrap(), "world2".to_string());
         assert_eq!(map.len(), 0);
         assert!(map.get("hello").is_none());
+        map.insert("hello3".to_string(), "world3".to_string());
+        map.clear();
+        assert_eq!(map.len(), 0);
+        map.insert("hello4".to_string(), "world4".to_string());
+        assert_eq!(map.len(), 1);
+        assert_eq!(map.get("hello4").unwrap(), "world4");
+        map.insert("hello5".to_string(), "world5".to_string());
+        assert_eq!(map.len(), 2);
+        map.clear();
+        assert_eq!(map.len(), 0);
     }
 
     #[test]

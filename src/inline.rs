@@ -514,6 +514,16 @@ where
     }
 
     #[inline]
+    pub (crate) fn clear(&mut self) {
+        self.raw.len = 0;
+        for i in 0..N {
+            unsafe {
+                *self.raw.aligned_groups.ctrl(i) = EMPTY;
+            }
+        }
+    }
+
+    #[inline]
     fn get_inner<Q: ?Sized>(&self, k: &Q) -> Option<&(K, V)>
     where
         Q: Hash + Equivalent<K>,
