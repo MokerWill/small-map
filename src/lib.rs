@@ -24,11 +24,9 @@ pub use hashbrown::Equivalent;
 mod serde;
 
 #[cfg(feature = "fasthash")]
-pub type FastSmallMap<const N: usize, K, V> =
-    SmallMap<N, K, V, core::hash::BuildHasherDefault<foldhash::fast::RandomState>>;
+pub type FastSmallMap<const N: usize, K, V> = SmallMap<N, K, V, foldhash::fast::RandomState>;
 #[cfg(feature = "fasthash")]
-pub type FastSmallSet<const N: usize, K> =
-    SmallMap<N, K, (), core::hash::BuildHasherDefault<foldhash::fast::RandomState>>;
+pub type FastSmallSet<const N: usize, K> = SmallMap<N, K, (), foldhash::fast::RandomState>;
 #[cfg(feature = "fxhash")]
 pub type FxSmallMap<const N: usize, K, V> =
     SmallMap<N, K, V, core::hash::BuildHasherDefault<rustc_hash::FxHasher>>;
