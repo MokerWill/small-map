@@ -23,6 +23,9 @@ pub use hashbrown::Equivalent;
 #[cfg(feature = "serde")]
 mod serde;
 
+#[cfg(feature = "fasthash")]
+pub type FastSmallMap<const N: usize, K, V> =
+    SmallMap<N, K, V, core::hash::BuildHasherDefault<foldhash::fast::RandomState>>;
 #[cfg(feature = "fxhash")]
 pub type FxSmallMap<const N: usize, K, V> =
     SmallMap<N, K, V, core::hash::BuildHasherDefault<rustc_hash::FxHasher>>;
@@ -220,7 +223,7 @@ where
                             SmallMap::Inline(_) => unsafe { unreachable_unchecked() },
                         };
                         for (k, v) in inline.into_iter() {
-                            heap.insert_unique_unchecked(k, v);
+                            unsafe { heap.insert_unique_unchecked(k, v); }
                         }
                         heap
                     }
